@@ -1,6 +1,7 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
-import { FaArrowUp } from "react-icons/fa";
+import { motion, useInView, useAnimation } from "framer-motion";
+import { useRef, useState } from "react";
+import { FaArrowUp, FaReact, FaPython } from "react-icons/fa";
+import { SiDjango, SiPostgresql } from "react-icons/si";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { Helmet } from "react-helmet-async";
@@ -46,26 +47,66 @@ const cardVariants = {
       duration: 0.6,
     },
   },
+  hover: {
+    scale: 1.02,
+    transition: { duration: 0.3 },
+  },
 };
+
+// Variantes para los íconos de habilidades
+const skillIconVariants = (xStart, yStart, index) => ({
+  hidden: {
+    opacity: 0,
+    x: xStart, // Usaremos valores relativos en vw más abajo
+    y: yStart,
+    scale: 0.5,
+  },
+  visible: {
+    opacity: 1,
+    x: `calc(0.5rem + ${index} * 2vw)`, // Posición final relativa al viewport
+    y: 0,
+    scale: 1,
+    transition: {
+      type: "spring",
+      stiffness: 200,
+      damping: 15,
+      duration: 0.4,
+    },
+  },
+});
 
 // Función para inicializar las partículas
 const particlesInit = async (engine) => {
   await loadFull(engine);
 };
 
-// Datos de proyectos (ejemplo)
+// Datos de proyectos con habilidades e íconos asociados
 const projects = [
   {
     title: "Store Online Apple House",
     description:
       "An online store for Apple products, built with Django, DRF, and React. Includes MySQL to PostgreSQL migration and payment API integration.",
     link: "https://github.com/yourusername/apple-house",
+    skills: [
+      { name: "Django", icon: <SiDjango /> },
+      { name: "React", icon: <FaReact /> },
+      { name: "PostgreSQL", icon: <SiPostgresql /> },
+      { name: "DRF", icon: <SiDjango /> },
+      { name: "Payment APIs", icon: <FaPython /> },
+    ],
   },
   {
     title: "Virtual Classrooms - Online Store",
     description:
       "Scalable web application for virtual classrooms with JWT authentication, using Django, React, and Zustand, with a PostgreSQL database.",
     link: "https://github.com/yourusername/virtual-classrooms",
+    skills: [
+      { name: "Django", icon: <SiDjango /> },
+      { name: "React", icon: <FaReact /> },
+      { name: "PostgreSQL", icon: <SiPostgresql /> },
+      { name: "JWT", icon: <FaPython /> },
+      { name: "Zustand", icon: <FaReact /> },
+    ],
   },
 ];
 
@@ -164,41 +205,92 @@ function Projects({ isDarkMode }) {
           </motion.div>
 
           <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project, index) => (
-              <motion.div
-                key={index}
-                variants={cardVariants}
-                initial="offscreen"
-                whileInView="onscreen"
-                viewport={{ once: true, amount: 0.5 }}
-                className={`${
-                  isDarkMode ? "bg-gray-800 bg-opacity-80" : "bg-gray-100"
-                } p-6 rounded-lg shadow-lg`}
-              >
-                <h3
-                  className={`text-xl font-semibold ${
-                    isDarkMode ? "text-blue-400" : "text-blue-600"
-                  } mb-2`}
+            {projects.map((project, index) => {
+              const controls = useAnimation();
+              const [isIconsVisible, setIsIconsVisible] = useState(false);
+
+              // Controlar la animación según el estado
+              const handleAnimation = (state) => {
+                setIsIconsVisible(state);
+                controls.start(state ? "visible" : "hidden");
+              };
+
+              return (
+                <motion.div
+                  key={index}
+                  variants={cardVariants}
+                  initial="offscreen"
+                  whileInView="onscreen"
+                  onHoverStart={() => handleAnimation(true)}
+                  onHoverEnd={() => handleAnimation(false)}
+                  onTap={() => handleAnimation(!isIconsVisible)}
+                  viewport={{ once: true, amount: 0.5 }}
+                  className={`${
+                    isDarkMode ? "bg-gray-800 bg-opacity-80" : "bg-gray-100"
+                  } p-6 rounded-lg shadow-lg relative overflow-hidden`}
                 >
-                  {project.title}
-                </h3>
-                <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
-                  {project.description}
-                </p>
-                <a
-                  href={project.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`mt-4 inline-block ${
-                    isDarkMode
-                      ? "text-blue-300 hover:text-blue-400"
-                      : "text-blue-500 hover:text-blue-600"
-                  }`}
-                >
-                  See Project
-                </a>
-              </motion.div>
-            ))}
+                  <h3
+                    className={`text-xl font-semibold ${
+                      isDarkMode ? "text-blue-400" : "text-blue-600"
+                    } mb-2`}
+                  >
+                    {project.title}
+                  </h3>
+                  <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
+                    {project.description}
+                  </p>
+                  <div className="mt-4 flex items-center flex-wrap gap-2 relative">
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`inline-block ${
+                        isDarkMode
+                          ? "text-blue-300 hover:text-blue-400"
+                          : "text-blue-500 hover:text-blue-600"
+                      }`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      See Project
+                    </a>
+                    {/* Contenedor de íconos al lado derecho del enlace */}
+                    <div className="flex items-center ml-2 pointer-events-none flex-nowrap">
+                      {project.skills.map((skill, skillIndex) => {
+                        const positions = [
+                          { x: "-10vw", y: "-5vh" }, // Desde arriba-izquierda
+                          { x: "10vw", y: "-5vh" }, // Desde arriba-derecha
+                          { x: "-10vw", y: "5vh" }, // Desde abajo-izquierda
+                          { x: "10vw", y: "5vh" }, // Desde abajo-derecha
+                          { x: "0", y: "-10vh" }, // Desde arriba-centro
+                        ];
+                        const pos = positions[skillIndex % positions.length];
+
+                        return (
+                          <motion.div
+                            key={skillIndex}
+                            variants={skillIconVariants(
+                              pos.x,
+                              pos.y,
+                              skillIndex
+                            )}
+                            initial="hidden"
+                            animate={controls}
+                            className={`text-[clamp(1rem,2vw,1.5rem)] ${
+                              isDarkMode ? "text-blue-300" : "text-blue-500"
+                            } mx-1`}
+                            title={skill.name}
+                          >
+                            {skill.icon}
+                          </motion.div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
