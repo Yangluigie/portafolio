@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [
     react(),
     sitemap({
-      hostname: "https://tudominio.com",
+      hostname: "https://devsgen-yang-portfolio.netlify.app",
       routes: ["/", "/about", "/projects", "/contact"],
     }),
   ],
