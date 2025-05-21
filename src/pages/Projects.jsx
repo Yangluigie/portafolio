@@ -1,3 +1,4 @@
+// src/pages/Projects.jsx
 import { motion, useInView, useAnimation } from "framer-motion";
 import { useRef, useState } from "react";
 import { FaArrowUp, FaReact, FaPython } from "react-icons/fa";
@@ -5,16 +6,11 @@ import { SiDjango, SiPostgresql } from "react-icons/si";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 
-// Variantes para animaciones
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.3,
-    },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
 
 const itemVariants = {
@@ -22,71 +18,39 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15,
-    },
+    transition: { type: "spring", stiffness: 100, damping: 15 },
   },
 };
 
 const cardVariants = {
-  offscreen: {
-    y: 50,
-    opacity: 0,
-    scale: 0.95,
-  },
+  offscreen: { y: 50, opacity: 0, scale: 0.95 },
   onscreen: {
     y: 0,
     opacity: 1,
     scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 120,
-      damping: 15,
-      duration: 0.6,
-    },
+    transition: { type: "spring", stiffness: 120, damping: 15, duration: 0.6 },
   },
-  hover: {
-    scale: 1.02,
-    transition: { duration: 0.3 },
-  },
+  hover: { scale: 1.02, transition: { duration: 0.3 } },
 };
 
-// Variantes para los íconos de habilidades
 const skillIconVariants = (xStart, yStart, index) => ({
-  hidden: {
-    opacity: 0,
-    x: xStart, // Usaremos valores relativos en vw más abajo
-    y: yStart,
-    scale: 0.5,
-  },
+  hidden: { opacity: 0, x: xStart, y: yStart, scale: 0.5 },
   visible: {
     opacity: 1,
-    x: `calc(0.5rem + ${index} * 2vw)`, // Posición final relativa al viewport
+    x: `calc(0.5rem + ${index} * 2vw)`,
     y: 0,
     scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 200,
-      damping: 15,
-      duration: 0.4,
-    },
+    transition: { type: "spring", stiffness: 200, damping: 15, duration: 0.4 },
   },
 });
 
-// Función para inicializar las partículas
 const particlesInit = async (engine) => {
   await loadFull(engine);
 };
 
-// Datos de proyectos con habilidades e íconos asociados
 const projects = [
   {
-    title: "Store Online Apple House",
-    description:
-      "An online store for Apple products, built with Django, DRF, and React. Includes MySQL to PostgreSQL migration and payment API integration.",
-    link: "https://github.com/yourusername/apple-house",
+    translationKey: "project_apple_house",
     skills: [
       { name: "Django", icon: <SiDjango /> },
       { name: "React", icon: <FaReact /> },
@@ -94,12 +58,10 @@ const projects = [
       { name: "DRF", icon: <SiDjango /> },
       { name: "Payment APIs", icon: <FaPython /> },
     ],
+    link: "https://github.com/yourusername/apple-house",
   },
   {
-    title: "Virtual Classrooms - Online Store",
-    description:
-      "Scalable web application for virtual classrooms with JWT authentication, using Django, React, and Zustand, with a PostgreSQL database.",
-    link: "https://github.com/yourusername/virtual-classrooms",
+    translationKey: "project_virtual_classrooms",
     skills: [
       { name: "Django", icon: <SiDjango /> },
       { name: "React", icon: <FaReact /> },
@@ -107,10 +69,12 @@ const projects = [
       { name: "JWT", icon: <FaPython /> },
       { name: "Zustand", icon: <FaReact /> },
     ],
+    link: "https://github.com/yourusername/virtual-classrooms",
   },
 ];
 
 function Projects({ isDarkMode }) {
+  const { t } = useTranslation();
   const projectsRef = useRef(null);
   const isProjectsInView = useInView(projectsRef, {
     once: true,
@@ -124,13 +88,9 @@ function Projects({ isDarkMode }) {
       }`}
     >
       <Helmet>
-        <title>Proyectos - Yang Florido - Devs Gen, Desarrollador Web</title>
-        <meta
-          name="description"
-          content="Explora los proyectos de Yang Florido - Devs Gen en React, Django y más. Soluciones web innovadoras."
-        />
+        <title>{t("projects_title")} - Yang Florido - Devs Gen</title>
+        <meta name="description" content={t("projects_description")} />
       </Helmet>
-      {/* Fondo animado */}
       <div
         className={`absolute inset-0 ${
           isDarkMode
@@ -143,8 +103,6 @@ function Projects({ isDarkMode }) {
           isDarkMode ? "bg-gray-900 bg-opacity-50" : "bg-white bg-opacity-50"
         } min-h-full`}
       ></div>
-
-      {/* Partículas */}
       <Particles
         id="tsparticles-projects"
         init={particlesInit}
@@ -171,8 +129,6 @@ function Projects({ isDarkMode }) {
         }}
         className="absolute inset-0 z-0"
       />
-
-      {/* Contenido */}
       <section
         id="projects"
         ref={projectsRef}
@@ -191,7 +147,7 @@ function Projects({ isDarkMode }) {
                 isDarkMode ? "text-white" : "text-gray-900"
               }`}
             >
-              My Projects
+              {t("projects_title")}
             </motion.h1>
             <motion.p
               variants={itemVariants}
@@ -199,17 +155,13 @@ function Projects({ isDarkMode }) {
                 isDarkMode ? "text-gray-200" : "text-gray-700"
               } max-w-3xl mx-auto`}
             >
-              Here are some of the projects I've worked on, showcasing my skills
-              in web development and solution design.
+              {t("projects_description")}
             </motion.p>
           </motion.div>
-
           <div className="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project, index) => {
               const controls = useAnimation();
               const [isIconsVisible, setIsIconsVisible] = useState(false);
-
-              // Controlar la animación según el estado
               const handleAnimation = (state) => {
                 setIsIconsVisible(state);
                 controls.start(state ? "visible" : "hidden");
@@ -234,10 +186,10 @@ function Projects({ isDarkMode }) {
                       isDarkMode ? "text-blue-400" : "text-blue-600"
                     } mb-2`}
                   >
-                    {project.title}
+                    {t(`${project.translationKey}_title`)}
                   </h3>
                   <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
-                    {project.description}
+                    {t(`${project.translationKey}_description`)}
                   </p>
                   <div className="mt-4 flex items-center flex-wrap gap-2 relative">
                     <a
@@ -249,21 +201,18 @@ function Projects({ isDarkMode }) {
                           ? "text-blue-300 hover:text-blue-400"
                           : "text-blue-500 hover:text-blue-600"
                       }`}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                      }}
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      See Project
+                      {t("project_see_project")}
                     </a>
-                    {/* Contenedor de íconos al lado derecho del enlace */}
                     <div className="flex items-center ml-2 pointer-events-none flex-nowrap">
                       {project.skills.map((skill, skillIndex) => {
                         const positions = [
-                          { x: "-10vw", y: "-5vh" }, // Desde arriba-izquierda
-                          { x: "10vw", y: "-5vh" }, // Desde arriba-derecha
-                          { x: "-10vw", y: "5vh" }, // Desde abajo-izquierda
-                          { x: "10vw", y: "5vh" }, // Desde abajo-derecha
-                          { x: "0", y: "-10vh" }, // Desde arriba-centro
+                          { x: "-10vw", y: "-5vh" },
+                          { x: "10vw", y: "-5vh" },
+                          { x: "-10vw", y: "5vh" },
+                          { x: "10vw", y: "5vh" },
+                          { x: "0", y: "-10vh" },
                         ];
                         const pos = positions[skillIndex % positions.length];
 
@@ -294,8 +243,6 @@ function Projects({ isDarkMode }) {
           </div>
         </div>
       </section>
-
-      {/* Botón Volver Arriba */}
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

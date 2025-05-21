@@ -3,11 +3,12 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ComputerDesktopIcon } from "@heroicons/react/24/outline";
 import { FiSun, FiMoon } from "react-icons/fi";
+import { useTranslation } from "react-i18next";
 
 function Header({ isDarkMode, toggleTheme }) {
+  const { t, i18n } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
 
-  // Variantes para la animación del menú móvil
   const menuVariants = {
     closed: {
       opacity: 0,
@@ -21,7 +22,6 @@ function Header({ isDarkMode, toggleTheme }) {
     },
   };
 
-  // Variantes para la animación del ícono y texto del logo
   const glowVariants = {
     initial: { rotate: 0, scale: 1 },
     hover: {
@@ -39,7 +39,6 @@ function Header({ isDarkMode, toggleTheme }) {
     },
   };
 
-  // Variantes para el botón de tema
   const themeButtonVariants = {
     initial: { rotate: 0, scale: 1 },
     animate: {
@@ -47,6 +46,12 @@ function Header({ isDarkMode, toggleTheme }) {
       scale: [1, 1.2, 1],
       transition: { duration: 0.4, ease: "easeInOut" },
     },
+  };
+
+  const changeLanguage = (event) => {
+    const selectedLanguage = event.target.value;
+    i18n.changeLanguage(selectedLanguage);
+    localStorage.setItem("language", selectedLanguage);
   };
 
   return (
@@ -58,7 +63,6 @@ function Header({ isDarkMode, toggleTheme }) {
       } py-4 shadow-lg fixed top-0 w-full z-20`}
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
-        {/* Logo con ícono y texto animados */}
         <NavLink
           to="/"
           className="flex items-center space-x-2 text-2xl font-bold tracking-tight"
@@ -71,7 +75,7 @@ function Header({ isDarkMode, toggleTheme }) {
               isDarkMode ? "text-blue-400" : "text-blue-600"
             } drop-shadow-md`}
           >
-            DevsGen
+            {t("portfolio_title")}
           </motion.span>
           <motion.div
             variants={glowVariants}
@@ -84,7 +88,6 @@ function Header({ isDarkMode, toggleTheme }) {
           </motion.div>
         </NavLink>
 
-        {/* Menú para pantallas grandes */}
         <div className="hidden md:flex space-x-8 items-center">
           <NavLink
             to="/"
@@ -100,7 +103,7 @@ function Header({ isDarkMode, toggleTheme }) {
               }`
             }
           >
-            Start
+            {t("nav_start")}
           </NavLink>
           <NavLink
             to="/about"
@@ -116,7 +119,7 @@ function Header({ isDarkMode, toggleTheme }) {
               }`
             }
           >
-            About Me
+            {t("nav_about")}
           </NavLink>
           <NavLink
             to="/projects"
@@ -132,7 +135,7 @@ function Header({ isDarkMode, toggleTheme }) {
               }`
             }
           >
-            Projects
+            {t("nav_projects")}
           </NavLink>
           <NavLink
             to="/contact"
@@ -148,9 +151,8 @@ function Header({ isDarkMode, toggleTheme }) {
               }`
             }
           >
-            Contact
+            {t("nav_contact")}
           </NavLink>
-          {/* Botón de cambio de tema */}
           <motion.button
             variants={themeButtonVariants}
             initial="initial"
@@ -162,9 +164,20 @@ function Header({ isDarkMode, toggleTheme }) {
           >
             {isDarkMode ? <FiMoon size={24} /> : <FiSun size={24} />}
           </motion.button>
+          <select
+            onChange={changeLanguage}
+            defaultValue={i18n.language}
+            className={`p-2 rounded-lg ${
+              isDarkMode
+                ? "bg-gray-700 text-white"
+                : "bg-gray-200 text-gray-900"
+            } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          >
+            <option value="es">Español</option>
+            <option value="en">English</option>
+          </select>
         </div>
 
-        {/* Botón hamburguesa y tema para móviles */}
         <div className="md:hidden flex items-center space-x-4">
           <motion.button
             variants={themeButtonVariants}
@@ -177,6 +190,18 @@ function Header({ isDarkMode, toggleTheme }) {
           >
             {isDarkMode ? <FiMoon size={24} /> : <FiSun size={24} />}
           </motion.button>
+          <select
+            onChange={changeLanguage}
+            defaultValue={i18n.language}
+            className={`p-2 rounded-lg ${
+              isDarkMode
+                ? "bg-gray-700 text-white"
+                : "bg-gray-200 text-gray-900"
+            } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+          >
+            <option value="es">Español</option>
+            <option value="en">English</option>
+          </select>
           <button
             className="text-2xl focus:outline-none"
             onClick={() => setIsOpen(!isOpen)}
@@ -186,7 +211,6 @@ function Header({ isDarkMode, toggleTheme }) {
         </div>
       </div>
 
-      {/* Menú móvil animado */}
       <motion.div
         className={`md:hidden ${
           isDarkMode ? "bg-gray-900 bg-opacity-95" : "bg-white bg-opacity-95"
@@ -211,7 +235,7 @@ function Header({ isDarkMode, toggleTheme }) {
             }
             onClick={() => setIsOpen(false)}
           >
-            Start
+            {t("nav_start")}
           </NavLink>
           <NavLink
             to="/about"
@@ -228,7 +252,7 @@ function Header({ isDarkMode, toggleTheme }) {
             }
             onClick={() => setIsOpen(false)}
           >
-            About Me
+            {t("nav_about")}
           </NavLink>
           <NavLink
             to="/projects"
@@ -245,7 +269,7 @@ function Header({ isDarkMode, toggleTheme }) {
             }
             onClick={() => setIsOpen(false)}
           >
-            Projects
+            {t("nav_projects")}
           </NavLink>
           <NavLink
             to="/contact"
@@ -262,7 +286,7 @@ function Header({ isDarkMode, toggleTheme }) {
             }
             onClick={() => setIsOpen(false)}
           >
-            Contact
+            {t("nav_contact")}
           </NavLink>
         </div>
       </motion.div>

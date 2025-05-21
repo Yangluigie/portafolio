@@ -1,6 +1,9 @@
 import { NavLink } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 function Footer({ isDarkMode }) {
+  const { t } = useTranslation();
+
   return (
     <footer
       className={`py-6 ${
@@ -13,7 +16,7 @@ function Footer({ isDarkMode }) {
             isDarkMode ? "text-gray-400" : "text-gray-600"
           }`}
         >
-          © {new Date().getFullYear()} YangDev | All rights reserved.
+          {t("footer_copyright", { year: new Date().getFullYear() })}
         </p>
         <div className="mt-2 space-x-4">
           <NavLink
@@ -30,7 +33,7 @@ function Footer({ isDarkMode }) {
               }`
             }
           >
-            Start
+            {t("nav_start")}
           </NavLink>
           <NavLink
             to="/projects"
@@ -46,7 +49,7 @@ function Footer({ isDarkMode }) {
               }`
             }
           >
-            Projects
+            {t("nav_projects")}
           </NavLink>
           <NavLink
             to="/contact"
@@ -62,7 +65,7 @@ function Footer({ isDarkMode }) {
               }`
             }
           >
-            Contact
+            {t("nav_contact")}
           </NavLink>
         </div>
       </div>

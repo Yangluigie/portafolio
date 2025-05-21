@@ -4,16 +4,11 @@ import { FaArrowUp } from "react-icons/fa";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 
-// Variantes para animaciones
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.3,
-    },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
 
 const itemVariants = {
@@ -21,39 +16,26 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15,
-    },
+    transition: { type: "spring", stiffness: 100, damping: 15 },
   },
 };
 
 const cardVariants = {
-  offscreen: {
-    y: 50,
-    opacity: 0,
-    scale: 0.95,
-  },
+  offscreen: { y: 50, opacity: 0, scale: 0.95 },
   onscreen: {
     y: 0,
     opacity: 1,
     scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 120,
-      damping: 15,
-      duration: 0.6,
-    },
+    transition: { type: "spring", stiffness: 120, damping: 15, duration: 0.6 },
   },
 };
 
-// Función para inicializar las partículas
 const particlesInit = async (engine) => {
   await loadFull(engine);
 };
 
 function About({ isDarkMode }) {
+  const { t } = useTranslation();
   const aboutRef = useRef(null);
   const isAboutInView = useInView(aboutRef, { once: true, margin: "-100px" });
 
@@ -63,17 +45,10 @@ function About({ isDarkMode }) {
         isDarkMode ? "text-white" : "text-gray-900"
       }`}
     >
-      {/* SEO Dinámico */}
       <Helmet>
-        <title>Sobre Mí - Yang Florido - Devs Gen, Desarrollador Web</title>
-        <meta
-          name="description"
-          content="Conoce a Yang Florido - Devs Gen, experto en React, Django y bases de datos para soluciones web únicas."
-        />
+        <title>{t("about_title")} - Yang Florido - Devs Gen</title>
+        <meta name="description" content={t("about_description")} />
       </Helmet>
-
-      {/* Fondo y partículas */}
-      {/* Fondo animado */}
       <div
         className={`absolute inset-0 h-full min-h-screen ${
           isDarkMode
@@ -86,8 +61,6 @@ function About({ isDarkMode }) {
           isDarkMode ? "bg-gray-900 bg-opacity-50" : "bg-white bg-opacity-50"
         }`}
       ></div>
-
-      {/* Partículas */}
       <Particles
         id="tsparticles-about"
         init={particlesInit}
@@ -114,8 +87,6 @@ function About({ isDarkMode }) {
         }}
         className="absolute inset-0 z-0"
       />
-
-      {/* Contenido */}
       <section
         id="about"
         ref={aboutRef}
@@ -134,7 +105,7 @@ function About({ isDarkMode }) {
                 isDarkMode ? "text-white" : "text-gray-900"
               }`}
             >
-              About Me
+              {t("about_title")}
             </motion.h1>
             <motion.p
               variants={itemVariants}
@@ -142,13 +113,9 @@ function About({ isDarkMode }) {
                 isDarkMode ? "text-gray-200" : "text-gray-700"
               } max-w-3xl mx-auto`}
             >
-              I'm a passionate web developer with experience in React, Django,
-              and relational databases. I specialize in creating unique and
-              efficient digital solutions, combining creativity and technology
-              to solve real-world problems.
+              {t("about_description")}
             </motion.p>
           </motion.div>
-
           <div className="mt-12 grid gap-8 md:grid-cols-2">
             <motion.div
               variants={cardVariants}
@@ -164,13 +131,10 @@ function About({ isDarkMode }) {
                   isDarkMode ? "text-blue-400" : "text-blue-600"
                 } mb-2`}
               >
-                My Philosophy
+                {t("about_philosophy_title")}
               </h3>
               <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
-                I believe in continuous learning and building software that not
-                only works, but is also intuitive and elegant. My goal is to
-                deliver value through clean code and exceptional user
-                experiences.
+                {t("about_philosophy_description")}
               </p>
             </motion.div>
             <motion.div
@@ -187,19 +151,15 @@ function About({ isDarkMode }) {
                   isDarkMode ? "text-blue-400" : "text-blue-600"
                 } mb-2`}
               >
-                Interests
+                {t("about_interests_title")}
               </h3>
               <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
-                In addition to programming, I enjoy exploring new technologies,
-                reading about software development, and working on personal
-                projects that challenge my skills.
+                {t("about_interests_description")}
               </p>
             </motion.div>
           </div>
         </div>
       </section>
-
-      {/* Botón Volver Arriba */}
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

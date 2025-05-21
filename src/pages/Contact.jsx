@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react"; // Añadimos useState para el estado del formulario
+import { useRef, useState } from "react";
 import {
   FaArrowUp,
   FaLinkedin,
@@ -10,16 +10,11 @@ import {
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 
-// Variantes para animaciones
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.3,
-    },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
 
 const itemVariants = {
@@ -27,69 +22,53 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15,
-    },
+    transition: { type: "spring", stiffness: 100, damping: 15 },
   },
 };
 
-// Variantes para el botón de envío
 const buttonVariants = {
   initial: { scale: 1 },
-  hover: {
-    scale: 1.05,
-    transition: { duration: 0.3, ease: "easeInOut" },
-  },
+  hover: { scale: 1.05, transition: { duration: 0.3, ease: "easeInOut" } },
   tap: { scale: 0.95 },
-  loading: {
-    scale: 1,
-    transition: { duration: 0.3 },
-  },
+  loading: { scale: 1, transition: { duration: 0.3 } },
 };
 
-// Función para inicializar las partículas
 const particlesInit = async (engine) => {
   await loadFull(engine);
 };
 
 function Contact({ isDarkMode }) {
+  const { t } = useTranslation();
   const contactRef = useRef(null);
   const isContactInView = useInView(contactRef, {
     once: true,
     margin: "-100px",
   });
 
-  // Estado para el formulario
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState(null); // null, "success", "error"
+  const [submitStatus, setSubmitStatus] = useState(null);
 
-  // Manejar cambios en los inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Manejar envío del formulario
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     setSubmitStatus(null);
 
-    // Simulación de envío (reemplaza esto con tu lógica real, como una llamada a una API)
     setTimeout(() => {
-      // Aquí podrías añadir una llamada a un backend (por ejemplo, con fetch o axios)
       console.log("Formulario enviado:", formData);
       setIsSubmitting(false);
       setSubmitStatus("success");
-      setFormData({ name: "", email: "", message: "" }); // Limpiar formulario
-    }, 2000); // Simulamos 2 segundos de "carga"
+      setFormData({ name: "", email: "", message: "" });
+    }, 2000);
   };
 
   return (
@@ -99,13 +78,9 @@ function Contact({ isDarkMode }) {
       }`}
     >
       <Helmet>
-        <title>Contacto - Yang Florido - Devs Gen, Desarrollador Web</title>
-        <meta
-          name="description"
-          content="Contacta a Yang Florido - Devs Gen para colaboraciones o proyectos de desarrollo web."
-        />
+        <title>{t("contact_title")} - Yang Florido - Devs Gen</title>
+        <meta name="description" content={t("contact_description")} />
       </Helmet>
-      {/* Fondo animado */}
       <div
         className={`absolute inset-0 ${
           isDarkMode
@@ -118,8 +93,6 @@ function Contact({ isDarkMode }) {
           isDarkMode ? "bg-gray-900 bg-opacity-50" : "bg-white bg-opacity-50"
         } min-h-full`}
       ></div>
-
-      {/* Partículas */}
       <Particles
         id="tsparticles-contact"
         init={particlesInit}
@@ -146,8 +119,6 @@ function Contact({ isDarkMode }) {
         }}
         className="absolute inset-0 z-0"
       />
-
-      {/* Contenido */}
       <section
         id="contact"
         ref={contactRef}
@@ -166,7 +137,7 @@ function Contact({ isDarkMode }) {
                 isDarkMode ? "text-white" : "text-gray-900"
               }`}
             >
-              Hire me
+              {t("contact_title")}
             </motion.h1>
             <motion.p
               variants={itemVariants}
@@ -174,11 +145,9 @@ function Contact({ isDarkMode }) {
                 isDarkMode ? "text-gray-200" : "text-gray-700"
               } max-w-3xl mx-auto`}
             >
-              Interested in working together? Send me a message and let's talk!
+              {t("contact_description")}
             </motion.p>
           </motion.div>
-
-          {/* Formulario de Contacto */}
           <motion.div
             variants={itemVariants}
             initial="hidden"
@@ -186,7 +155,6 @@ function Contact({ isDarkMode }) {
             className="mt-12 max-w-lg mx-auto"
           >
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Campo Nombre */}
               <div>
                 <label
                   htmlFor="name"
@@ -194,7 +162,7 @@ function Contact({ isDarkMode }) {
                     isDarkMode ? "text-gray-200" : "text-gray-700"
                   } mb-2`}
                 >
-                  Name
+                  {t("contact_name_label")}
                 </label>
                 <input
                   type="text"
@@ -208,11 +176,9 @@ function Contact({ isDarkMode }) {
                       ? "bg-gray-800 text-white border border-gray-700"
                       : "bg-white text-gray-900 border border-gray-300"
                   }`}
-                  placeholder="Tu nombre"
+                  placeholder={t("contact_name_placeholder")}
                 />
               </div>
-
-              {/* Campo Email */}
               <div>
                 <label
                   htmlFor="email"
@@ -220,7 +186,7 @@ function Contact({ isDarkMode }) {
                     isDarkMode ? "text-gray-200" : "text-gray-700"
                   } mb-2`}
                 >
-                  Email
+                  {t("contact_email_label")}
                 </label>
                 <input
                   type="email"
@@ -234,11 +200,9 @@ function Contact({ isDarkMode }) {
                       ? "bg-gray-800 text-white border border-gray-700"
                       : "bg-white text-gray-900 border border-gray-300"
                   }`}
-                  placeholder="tu@email.com"
+                  placeholder={t("contact_email_placeholder")}
                 />
               </div>
-
-              {/* Campo Mensaje */}
               <div>
                 <label
                   htmlFor="message"
@@ -246,7 +210,7 @@ function Contact({ isDarkMode }) {
                     isDarkMode ? "text-gray-200" : "text-gray-700"
                   } mb-2`}
                 >
-                  Message
+                  {t("contact_message_label")}
                 </label>
                 <textarea
                   id="message"
@@ -260,11 +224,9 @@ function Contact({ isDarkMode }) {
                       ? "bg-gray-800 text-white border border-gray-700"
                       : "bg-white text-gray-900 border border-gray-300"
                   }`}
-                  placeholder="Escribe tu mensaje aquí..."
+                  placeholder={t("contact_message_placeholder")}
                 />
               </div>
-
-              {/* Botón de Envío */}
               <motion.button
                 type="submit"
                 variants={buttonVariants}
@@ -282,22 +244,20 @@ function Contact({ isDarkMode }) {
                 {isSubmitting ? (
                   <>
                     <FaSpinner className="animate-spin mr-2" />
-                    Sending...
+                    {t("contact_submitting")}
                   </>
                 ) : (
-                  "Enviar Mensaje"
+                  t("contact_submit_button")
                 )}
               </motion.button>
             </form>
-
-            {/* Mensaje de Estado */}
             {submitStatus === "success" && (
               <motion.p
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 className="mt-4 text-green-500"
               >
-                Message sent successfully! I'll get back to you soon.
+                {t("contact_success")}
               </motion.p>
             )}
             {submitStatus === "error" && (
@@ -306,12 +266,10 @@ function Contact({ isDarkMode }) {
                 animate={{ opacity: 1 }}
                 className="mt-4 text-red-500"
               >
-                There was an error sending the message. Please try again.
+                {t("contact_error")}
               </motion.p>
             )}
           </motion.div>
-
-          {/* Enlaces Sociales */}
           <motion.div
             variants={itemVariants}
             initial="hidden"
@@ -358,8 +316,6 @@ function Contact({ isDarkMode }) {
           </motion.div>
         </div>
       </section>
-
-      {/* Botón Volver Arriba */}
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

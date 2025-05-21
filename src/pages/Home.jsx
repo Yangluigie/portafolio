@@ -8,11 +8,9 @@ import {
   FaPython,
   FaReact,
   FaYarn,
-  FaLock,
-  FaDatabase,
   FaMapMarkerAlt,
   FaArrowUp,
-  FaSpinner, // Añadimos FaSpinner para el efecto de carga
+  FaSpinner,
 } from "react-icons/fa";
 import {
   SiDjango,
@@ -24,16 +22,12 @@ import {
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { Helmet } from "react-helmet-async";
+import { useTranslation } from "react-i18next";
 
-// Variantes para animaciones escalonadas del Hero
+// Variantes para animaciones (sin cambios)
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.3,
-    },
-  },
+  visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
 };
 
 const itemVariants = {
@@ -41,21 +35,13 @@ const itemVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 15,
-    },
+    transition: { type: "spring", stiffness: 100, damping: 15 },
   },
 };
 
-// Variantes para el botón con resplandor animado (modificamos para incluir estado de carga)
 const buttonVariants = {
   initial: { scale: 1 },
-  hover: {
-    scale: 1.05,
-    transition: { duration: 0.3, ease: "easeInOut" },
-  },
+  hover: { scale: 1.05, transition: { duration: 0.3, ease: "easeInOut" } },
   tap: { scale: 0.95 },
   glow: {
     filter: [
@@ -66,43 +52,29 @@ const buttonVariants = {
     ],
     transition: { duration: 2, repeat: Infinity, ease: "easeInOut" },
   },
-  loading: {
-    scale: 1,
-    transition: { duration: 0.3 },
-  },
+  loading: { scale: 1, transition: { duration: 0.3 } },
 };
 
-// Variantes para las tarjetas de experiencia y habilidades
 const cardVariants = {
-  offscreen: {
-    y: 50,
-    opacity: 0,
-    scale: 0.95,
-  },
+  offscreen: { y: 50, opacity: 0, scale: 0.95 },
   onscreen: {
     y: 0,
     opacity: 1,
     scale: 1,
-    transition: {
-      type: "spring",
-      stiffness: 120,
-      damping: 15,
-      duration: 0.6,
-    },
+    transition: { type: "spring", stiffness: 120, damping: 15, duration: 0.6 },
   },
 };
 
-// Variantes de testimoniales
 const testimonials = [
   {
     name: "Ana Pérez",
     role: "Cliente - Apple House",
-    text: "Yang delivered an exceptional online store with seamless functionality and a modern design. Highly recommended!",
+    translationKey: "testimonial_ana",
   },
   {
     name: "Carlos Gómez",
     role: "Colaborador - MOVIDIC",
-    text: "His expertise in database optimization transformed our workflow. A true professional!",
+    translationKey: "testimonial_carlos",
   },
 ];
 
@@ -115,12 +87,12 @@ const testimonialVariants = {
   },
 };
 
-// Función para inicializar las partículas
 const particlesInit = async (engine) => {
   await loadFull(engine);
 };
 
 function Home({ isDarkMode }) {
+  const { t } = useTranslation();
   const experienceRef = useRef(null);
   const skillsRef = useRef(null);
   const isExperienceInView = useInView(experienceRef, {
@@ -128,56 +100,45 @@ function Home({ isDarkMode }) {
     margin: "-100px",
   });
   const isSkillsInView = useInView(skillsRef, { once: true, margin: "-100px" });
-
-  // Estado para controlar si el CV está "descargando"
   const [isDownloading, setIsDownloading] = useState(false);
 
-  // Función para manejar la descarga
   const handleDownload = () => {
     setIsDownloading(true);
-    // Simulamos un retraso de 2 segundos para el efecto (ajústalo según necesites)
-    setTimeout(() => {
-      setIsDownloading(false);
-      // La descarga real ya está manejada por el atributo download del <a>
-    }, 2000);
+    setTimeout(() => setIsDownloading(false), 2000);
   };
 
-  // Datos de experiencia
   const experiences = [
     {
-      title: "Full Stack Developer",
+      title: t("experience_apple_house_title", "Full Stack Developer"),
       company: "Freelance - Apple House | 2025 - Present",
-      description:
-        "Development of an online store for a retailer that distributes Apple products. Built with Django, DRF, and React. Migration from MySQL to PostgreSQL and integration of payment APIs.",
+      translationKey: "experience_apple_house",
     },
     {
-      title: "Full Stack Developer",
+      title: t("experience_freelance_title", "Full Stack Developer"),
       company: "Freelance - Return to Freedom Foundation | 2025 - Present",
-      description:
-        "Development and scalability of a web application for virtual classrooms, optimizing authentication with JWT and scalable APIs. Technologies: Django, DRF, React, and Zustand, PostgreSQL database",
+      translationKey: "experience_freelance",
     },
     {
-      title: "IT Systems Analyst",
+      title: t("experience_movidic_title", "IT Systems Analyst"),
       company:
         "Cundinamarca Digital Mobility Temporary Union – MOVIDIC (Cundinamarca Transit) | 2023 - Present",
-      description:
-        "Maintenance and support of rack equipment, including preventive and corrective interventions. Management and optimization of relational databases (PostgreSQL/MySQL), including queries, schema creation, and data deletion according to guidelines. Ticket management: issuing resolutions, applying payments, and enforcing coercive collections.",
+      translationKey: "experience_movidic",
     },
     {
-      title: "IT Support Technician",
+      title: t("experience_data_tools_title", "IT Support Technician"),
       company: "Data Tools S.A. (Transito de Cundinamarca) | 2022 - 2023",
-      description:
-        "Management and query of relational databases (PostgreSQL/MySQL), including query creation, user and permissions management, data deletion, and monitoring with tools such as pgAdmin and MySQL Workbench. Design of tables and relationships according to business requirements.",
+      translationKey: "experience_data_tools",
     },
     {
-      title: "Structured Cabling and Support Technician",
+      title: t(
+        "experience_tech_startup_title",
+        "Structured Cabling and Support Technician"
+      ),
       company: "Tech Startup | 2014 - 2015",
-      description:
-        "Instalación y mantenimiento de cableado estructurado, soporte preventivo y correctivo de equipos, y administración de contenido web.",
+      translationKey: "experience_tech_startup",
     },
   ];
 
-  // Datos de skills con íconos y colores originales
   const skills = [
     {
       name: "HTML",
@@ -314,13 +275,9 @@ function Home({ isDarkMode }) {
   return (
     <div className={`relative ${isDarkMode ? "text-white" : "text-gray-900"}`}>
       <Helmet>
-        <title>Yang Florido - Desarrollador Web Profesional</title>
-        <meta
-          name="description"
-          content="Portafolio de Yang Florido - Devs Gen, experto en React y Django. Descubre mis proyectos y habilidades."
-        />
+        <title>{t("home_title")}</title>
+        <meta name="description" content={t("home_description")} />
       </Helmet>
-      {/* Fondo animado */}
       <div
         className={`absolute inset-0 ${
           isDarkMode
@@ -333,8 +290,6 @@ function Home({ isDarkMode }) {
           isDarkMode ? "bg-gray-900 bg-opacity-50" : "bg-white bg-opacity-50"
         } min-h-full`}
       ></div>
-
-      {/* Partículas */}
       <Particles
         id="tsparticles"
         init={particlesInit}
@@ -361,8 +316,6 @@ function Home({ isDarkMode }) {
         }}
         className="absolute inset-0 z-0"
       />
-
-      {/* Sección Hero */}
       <div
         id="hero"
         className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20"
@@ -380,7 +333,7 @@ function Home({ isDarkMode }) {
                 isDarkMode ? "text-white" : "text-gray-900"
               } tracking-tight`}
             >
-              Hi ✌️, I'm Yang Florido Solano!
+              {t("home_title")}
             </motion.h1>
             <motion.p
               variants={itemVariants}
@@ -388,8 +341,7 @@ function Home({ isDarkMode }) {
                 isDarkMode ? "text-gray-200" : "text-gray-700"
               } max-w-2xl mx-auto`}
             >
-              Web developer specializing in React and Django, creating unique
-              digital experiences.
+              {t("home_description")}
             </motion.p>
             <motion.img
               variants={itemVariants}
@@ -410,7 +362,7 @@ function Home({ isDarkMode }) {
                 className={isDarkMode ? "text-yellow-400" : "text-blue-600"}
               />
               <span className="text-lg md:text-xl flex items-center space-x-2">
-                <span>Colombia</span>
+                <span>{t("home_location")}</span>
                 <svg
                   width="20"
                   height="14"
@@ -441,7 +393,7 @@ function Home({ isDarkMode }) {
                     : "bg-blue-600 text-white hover:bg-blue-700"
                 } py-3 px-8 rounded-full text-lg font-semibold transition-colors shadow-md`}
               >
-                See My Projects
+                {t("home_see_projects")}
               </motion.a>
               <motion.a
                 href="/yangcv.pdf"
@@ -461,14 +413,12 @@ function Home({ isDarkMode }) {
                 {isDownloading ? (
                   <FaSpinner className="animate-spin mr-2" />
                 ) : null}
-                {isDownloading ? "Downloading..." : "Download CV"}
+                {isDownloading ? "Downloading..." : t("home_download_cv")}
               </motion.a>
             </motion.div>
           </motion.div>
         </div>
       </div>
-
-      {/* Sección de Experiencia */}
       <section
         id="experience"
         ref={experienceRef}
@@ -480,7 +430,7 @@ function Home({ isDarkMode }) {
               isDarkMode ? "text-white" : "text-gray-900"
             } text-center mb-12`}
           >
-            My Experience
+            {t("home_experience_title")}
           </h2>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {experiences.map((exp, index) => (
@@ -509,15 +459,13 @@ function Home({ isDarkMode }) {
                   {exp.company}
                 </p>
                 <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
-                  {exp.description}
+                  {t(exp.translationKey)}
                 </p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Sección de Testimonios */}
       <section id="testimonials" className="py-16 md:py-24 relative z-10">
         <div className="container mx-auto px-4">
           <h2
@@ -525,7 +473,7 @@ function Home({ isDarkMode }) {
               isDarkMode ? "text-white" : "text-gray-900"
             } text-center mb-12`}
           >
-            What People Say
+            {t("home_testimonials_title")}
           </h2>
           <div className="grid gap-8 md:grid-cols-2">
             {testimonials.map((testimonial, index) => (
@@ -544,7 +492,7 @@ function Home({ isDarkMode }) {
                     isDarkMode ? "text-gray-300" : "text-gray-700"
                   } mb-4 italic`}
                 >
-                  "{testimonial.text}"
+                  "{t(testimonial.translationKey)}"
                 </p>
                 <p
                   className={`font-semibold ${
@@ -561,8 +509,6 @@ function Home({ isDarkMode }) {
           </div>
         </div>
       </section>
-
-      {/* Sección de Skills */}
       <section
         id="skills"
         ref={skillsRef}
@@ -574,7 +520,7 @@ function Home({ isDarkMode }) {
               isDarkMode ? "text-white" : "text-gray-900"
             } text-center mb-12`}
           >
-            My Skills
+            {t("home_skills_title")}
           </h2>
           <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-4">
             {skills.map((skill, index) => (
@@ -597,17 +543,18 @@ function Home({ isDarkMode }) {
                   {skill.name}
                 </p>
                 <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
-                  {skill.name.includes("Django") || skill.name === "Python"
-                    ? "3+ years"
-                    : "2+ years"}
+                  {t("skill_years", {
+                    years:
+                      skill.name.includes("Django") || skill.name === "Python"
+                        ? "3+"
+                        : "2+",
+                  })}
                 </p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
-
-      {/* Botón Volver Arriba */}
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
