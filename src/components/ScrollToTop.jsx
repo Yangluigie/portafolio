@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useLocation } from "react-hooks";
+import { useLocation } from "react-router-dom";
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation();
@@ -10,20 +10,20 @@ function ScrollToTop() {
       const element = document.getElementById(hash.replace("#", ""));
       if (element) {
         element.scrollIntoView({
-          behavior: "smooth", // Desplazamiento suave
-          block: "start", // Alinear al inicio de la sección
+          behavior: "smooth",
+          block: "start",
         });
       }
     } else {
       // Si no hay hash, desplazar a la parte superior
       window.scrollTo({
         top: 0,
-        behavior: "instant", // Desplazamiento inmediato
+        behavior: "instant",
       });
     }
-  }, [pathname, hash]); // Ejecutar al cambiar la ruta o hash
+  }, [pathname, hash]); // Dependencias: pathname y hash
 
-  return null; // No renderiza nada
+  return null;
 }
 
 export default ScrollToTop;
