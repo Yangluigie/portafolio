@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { I18nextProvider } from "react-i18next";
-import i18n from "./i18n";
+import i18n from "./i18next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Projects from "./pages/Projects";
 import Contact from "./pages/Contact";
+import ScrollToTop from "./components/ScrollToTop";
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -30,6 +31,7 @@ function App() {
   return (
     <I18nextProvider i18n={i18n}>
       <Router>
+        <ScrollToTop /> {/* Añadir aquí */}
         <div className="flex flex-col min-h-screen">
           <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
           <main className="flex-grow">
