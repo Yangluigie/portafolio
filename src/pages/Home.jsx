@@ -380,7 +380,7 @@ function Home({ isDarkMode }) {
               variants={itemVariants}
               className="flex justify-center space-x-4"
             >
-              <motion.a
+              {/* <motion.a
                 href="/projects"
                 variants={buttonVariants}
                 initial="initial"
@@ -394,7 +394,7 @@ function Home({ isDarkMode }) {
                 } py-3 px-8 rounded-full text-lg font-semibold transition-colors shadow-md`}
               >
                 {t("home_see_projects")}
-              </motion.a>
+              </motion.a> */}
               <motion.a
                 href="/yangcv.pdf"
                 download="Yang_Florido_CV.pdf"
