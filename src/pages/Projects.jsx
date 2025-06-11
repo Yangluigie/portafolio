@@ -2,7 +2,7 @@
 import { motion, useInView, useAnimation } from "framer-motion";
 import { useRef, useState } from "react";
 import { FaArrowUp, FaReact, FaPython } from "react-icons/fa";
-import { SiDjango, SiPostgresql } from "react-icons/si";
+import { SiDjango, SiPostgresql, SiTailwindcss } from "react-icons/si";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
 import { Helmet } from "react-helmet-async";
@@ -70,6 +70,17 @@ const projects = [
       { name: "Zustand", icon: <FaReact /> },
     ],
     link: "https://github.com/yourusername/virtual-classrooms",
+  },
+  {
+    translationKey: "project_pdf_converter",
+    skills: [
+      { name: "React", icon: <FaReact /> },
+      { name: "Tailwind CSS", icon: <SiTailwindcss /> },
+      { name: "Django", icon: <SiDjango /> },
+      { name: "Django REST Framework", icon: <SiDjango /> },
+      { name: "Vite", icon: <FaReact /> }, // Usamos FaReact como placeholder para Vite
+    ],
+    link: "https://pdf-converter-free.netlify.app",
   },
 ];
 

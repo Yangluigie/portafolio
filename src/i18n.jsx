@@ -58,6 +58,10 @@ const resources = {
       project_virtual_classrooms_description:
         "Aplicación web escalable para aulas virtuales con autenticación JWT, usando Django, React y Zustand, con una base de datos PostgreSQL.",
       project_see_project: "Ver Proyecto",
+      // Nuevo proyecto: PDF & TIFF Converter
+      project_pdf_converter_title: "Convertidor PDF & TIFF",
+      project_pdf_converter_description:
+        "Una aplicación web para convertir archivos PDF a Word y TIFF a PDF, con una interfaz moderna y APIs robustas. Desarrollada con React, Tailwind CSS, Vite, Django y Django REST Framework.",
       // Contact
       contact_title: "Contáctame",
       contact_description:
@@ -131,6 +135,10 @@ const resources = {
       project_virtual_classrooms_description:
         "Scalable web application for virtual classrooms with JWT authentication, using Django, React, and Zustand, with a PostgreSQL database.",
       project_see_project: "See Project",
+      // Nuevo proyecto: PDF & TIFF Converter
+      project_pdf_converter_title: "PDF & TIFF Converter",
+      project_pdf_converter_description:
+        "A web application for converting PDF files to Word and TIFF to PDF, featuring a modern interface and robust APIs. Built with React, Tailwind CSS, Vite, Django, and Django REST Framework.",
       // Contact
       contact_title: "Contact Me",
       contact_description:
