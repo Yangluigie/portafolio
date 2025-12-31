@@ -1,61 +1,62 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { I18nextProvider } from "react-i18next";
-import i18n from "./i18n";
-import Header from "./components/Header";
-import Footer from "./components/Footer";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Projects from "./pages/Projects";
-import Contact from "./pages/Contact";
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { lazy, Suspense } from "react";
+import Layout from "./layouts/Layout";
 import ScrollToTop from "./components/ScrollToTop";
+import Loader from "./components/Loader"; // ✅ Loader PRO
 
-function App() {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    try {
-      const savedTheme = localStorage.getItem("theme");
-      return savedTheme ? JSON.parse(savedTheme) : false;
-    } catch {
-      return false;
-    }
-  });
+const Home = lazy(() => import("./pages/Home"));
+const About = lazy(() => import("./pages/About"));
+const Projects = lazy(() => import("./pages/Projects"));
+const Contact = lazy(() => import("./pages/Contact"));
 
-  useEffect(() => {
-    localStorage.setItem("theme", JSON.stringify(isDarkMode));
-  }, [isDarkMode]);
-
-  const toggleTheme = () => {
-    setIsDarkMode((prevMode) => !prevMode);
-  };
-
+function NotFound() {
   return (
-    <I18nextProvider i18n={i18n}>
-      <Router>
-        <ScrollToTop /> {/* Añadir aquí */}
-        <div className="flex flex-col min-h-screen">
-          <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-          <main className="flex-grow">
-            <Routes>
-              <Route path="/" element={<Home isDarkMode={isDarkMode} />} />
-              <Route
-                path="/about"
-                element={<About isDarkMode={isDarkMode} />}
-              />
-              <Route
-                path="/projects"
-                element={<Projects isDarkMode={isDarkMode} />}
-              />
-              <Route
-                path="/contact"
-                element={<Contact isDarkMode={isDarkMode} />}
-              />
-            </Routes>
-          </main>
-          <Footer isDarkMode={isDarkMode} />
+    <div className="min-h-[60vh] flex items-center justify-center px-4">
+      <div className="max-w-xl w-full text-center rounded-2xl border border-slate-200/60 bg-white/70 p-8 shadow-lg backdrop-blur-sm dark:border-slate-800/60 dark:bg-slate-900/60">
+        <h1 className="text-4xl font-bold text-slate-900 dark:text-white">404</h1>
+        <p className="mt-3 text-slate-600 dark:text-slate-300">
+          Página no encontrada.
+        </p>
+
+        <div className="mt-6 flex items-center justify-center gap-3">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center px-5 py-2.5 rounded-full font-semibold
+                       bg-blue-600 text-white hover:bg-blue-700 transition"
+          >
+            Ir al inicio
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => window.history.back()}
+            className="inline-flex items-center justify-center px-5 py-2.5 rounded-full font-semibold
+                       border border-slate-300/70 text-slate-900 hover:bg-slate-100 transition
+                       dark:border-slate-700/70 dark:text-white dark:hover:bg-slate-800/60"
+          >
+            Volver
+          </button>
         </div>
-      </Router>
-    </I18nextProvider>
+      </div>
+    </div>
   );
 }
 
-export default App;
+export default function App() {
+  return (
+    <BrowserRouter>
+      <ScrollToTop />
+      <Suspense fallback={<Loader />}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="about" element={<About />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="contact" element={<Contact />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </Suspense>
+    </BrowserRouter>
+  );
+}

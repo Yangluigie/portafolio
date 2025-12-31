@@ -1,5 +1,6 @@
-import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+// src/pages/About.jsx
+import { motion } from "framer-motion";
+import { useMemo } from "react";
 import { FaArrowUp } from "react-icons/fa";
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
@@ -8,172 +9,163 @@ import { useTranslation } from "react-i18next";
 
 const containerVariants = {
   hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.3 } },
+  visible: { opacity: 1, transition: { staggerChildren: 0.22 } },
 };
 
 const itemVariants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 16 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { type: "spring", stiffness: 100, damping: 15 },
+    transition: { type: "spring", stiffness: 110, damping: 16 },
   },
 };
 
 const cardVariants = {
-  offscreen: { y: 50, opacity: 0, scale: 0.95 },
+  offscreen: { y: 24, opacity: 0, scale: 0.985 },
   onscreen: {
     y: 0,
     opacity: 1,
     scale: 1,
-    transition: { type: "spring", stiffness: 120, damping: 15, duration: 0.6 },
+    transition: { type: "spring", stiffness: 120, damping: 16, duration: 0.55 },
   },
+  hover: { scale: 1.015, transition: { duration: 0.2 } },
 };
 
 const particlesInit = async (engine) => {
   await loadFull(engine);
 };
 
-function About({ isDarkMode }) {
+export default function About() {
   const { t } = useTranslation();
-  const aboutRef = useRef(null);
-  const isAboutInView = useInView(aboutRef, { once: true, margin: "-100px" });
+
+  // Partículas estilo Home (mismas), pero sobre fondo blanco
+  const particlesOptions = useMemo(
+    () => ({
+      fullScreen: { enable: false },
+      background: { color: { value: "transparent" } },
+      particles: {
+        number: { value: 70, density: { enable: true, value_area: 900 } },
+        color: { value: ["#2563eb", "#06b6d4", "#a855f7"] },
+        shape: { type: "circle" },
+        opacity: { value: 0.6 },
+        size: { value: 3, random: true },
+        move: {
+          enable: true,
+          speed: 1.1,
+          direction: "none",
+          random: true,
+          outMode: "out",
+        },
+      },
+      interactivity: {
+        events: { onHover: { enable: true, mode: "repulse" } },
+        modes: { repulse: { distance: 110, duration: 0.4 } },
+      },
+      detectRetina: true,
+    }),
+    []
+  );
 
   return (
-    <div
-      className={`relative min-h-screen ${
-        isDarkMode ? "text-white" : "text-gray-900"
-      }`}
-    >
+    <div className="relative min-h-screen overflow-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
       <Helmet>
-        <title>{t("about_title")} - Yang Florido - Devs Gen</title>
-        <meta name="description" content={t("about_description")} />
+        <title>Sobre mí | DevsGen – Yang Florido Solano</title>
+        <meta
+          name="description"
+          content="Conoce a Yang Florido Solano, desarrollador web y fundador de DevsGen. Especializado en React, Django y soluciones digitales modernas orientadas a resultados."
+        />
       </Helmet>
-      <div
-        className={`absolute inset-0 h-full min-h-screen ${
-          isDarkMode
-            ? "bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 animate-gradient bg-[length:200%_200%]"
-            : "bg-gradient-to-br from-blue-100 via-teal-100 to-yellow-100 animate-gradient bg-[length:200%_200%]"
-        }`}
-      ></div>
-      <div
-        className={`absolute inset-0 h-full min-h-screen ${
-          isDarkMode ? "bg-gray-900 bg-opacity-50" : "bg-white bg-opacity-50"
-        }`}
-      ></div>
+
+
+      {/* ✅ Fondo blanco real (sin degradado) */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-white dark:bg-slate-950" />
+        {/* overlay muy suave para dar “depth” sin teñir */}
+        <div className="absolute inset-0 bg-white/40 dark:bg-slate-950/40" />
+      </div>
+
+      {/* Particles */}
       <Particles
         id="tsparticles-about"
         init={particlesInit}
-        options={{
-          fullScreen: { enable: true },
-          particles: {
-            number: { value: 50, density: { enable: true, value_area: 800 } },
-            color: { value: isDarkMode ? "#ffffff" : "#3b82f6" },
-            shape: { type: "circle" },
-            opacity: { value: 0.5 },
-            size: { value: 3, random: true },
-            move: {
-              enable: true,
-              speed: 1,
-              direction: "none",
-              random: true,
-              outMode: "out",
-            },
-          },
-          interactivity: {
-            events: { onHover: { enable: true, mode: "repulse" } },
-            modes: { repulse: { distance: 100, duration: 0.4 } },
-          },
-        }}
-        className="absolute inset-0 z-0"
+        options={particlesOptions}
+        className="absolute inset-0 z-0 pointer-events-none"
       />
-      <section
-        id="about"
-        ref={aboutRef}
-        className="py-16 md:py-24 relative z-10 pt-20"
-      >
+
+      {/* Contenido */}
+      <section id="about" className="relative z-10 py-16 md:py-24 pt-20">
         <div className="container mx-auto px-4">
           <motion.div
             variants={containerVariants}
             initial="hidden"
             animate="visible"
-            className="text-center space-y-8"
+            className="text-center space-y-6"
           >
             <motion.h1
               variants={itemVariants}
-              className={`text-4xl md:text-6xl font-bold ${
-                isDarkMode ? "text-white" : "text-gray-900"
-              }`}
+              className="text-4xl md:text-6xl font-bold text-slate-900 dark:text-white"
             >
               {t("about_title")}
             </motion.h1>
+
             <motion.p
               variants={itemVariants}
-              className={`text-lg md:text-xl ${
-                isDarkMode ? "text-gray-200" : "text-gray-700"
-              } max-w-3xl mx-auto`}
+              className="text-lg md:text-xl text-slate-700 dark:text-slate-200 max-w-3xl mx-auto"
             >
               {t("about_description")}
             </motion.p>
           </motion.div>
+
           <div className="mt-12 grid gap-8 md:grid-cols-2">
             <motion.div
               variants={cardVariants}
               initial="offscreen"
               whileInView="onscreen"
-              viewport={{ once: true, amount: 0.5 }}
-              className={`${
-                isDarkMode ? "bg-gray-800 bg-opacity-80" : "bg-gray-100"
-              } p-6 rounded-lg shadow-lg`}
+              whileHover="hover"
+              viewport={{ once: true, amount: 0.45 }}
+              className="p-6 rounded-xl shadow-lg bg-white/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60 backdrop-blur-sm"
             >
-              <h3
-                className={`text-xl font-semibold ${
-                  isDarkMode ? "text-blue-400" : "text-blue-600"
-                } mb-2`}
-              >
+              <h3 className="text-xl font-semibold text-blue-700 dark:text-blue-400 mb-2">
                 {t("about_philosophy_title")}
               </h3>
-              <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
+              <p className="text-slate-600 dark:text-slate-300">
                 {t("about_philosophy_description")}
               </p>
             </motion.div>
+
             <motion.div
               variants={cardVariants}
               initial="offscreen"
               whileInView="onscreen"
-              viewport={{ once: true, amount: 0.5 }}
-              className={`${
-                isDarkMode ? "bg-gray-800 bg-opacity-80" : "bg-gray-100"
-              } p-6 rounded-lg shadow-lg`}
+              whileHover="hover"
+              viewport={{ once: true, amount: 0.45 }}
+              className="p-6 rounded-xl shadow-lg bg-white/70 dark:bg-slate-900/60 border border-slate-200/60 dark:border-slate-800/60 backdrop-blur-sm"
             >
-              <h3
-                className={`text-xl font-semibold ${
-                  isDarkMode ? "text-blue-400" : "text-blue-600"
-                } mb-2`}
-              >
+              <h3 className="text-xl font-semibold text-blue-700 dark:text-blue-400 mb-2">
                 {t("about_interests_title")}
               </h3>
-              <p className={isDarkMode ? "text-gray-400" : "text-gray-600"}>
+              <p className="text-slate-600 dark:text-slate-300">
                 {t("about_interests_description")}
               </p>
             </motion.div>
           </div>
         </div>
       </section>
+
+      {/* Scroll to top */}
       <motion.button
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
+        whileHover={{ scale: 1.08 }}
+        whileTap={{ scale: 0.95 }}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-        className={`fixed bottom-6 right-6 p-3 rounded-full ${
-          isDarkMode ? "bg-blue-600 text-white" : "bg-blue-500 text-white"
-        } shadow-lg z-20`}
+        className="fixed bottom-6 right-6 p-3 rounded-full bg-blue-600 text-white shadow-lg z-20"
+        aria-label="Volver arriba"
+        type="button"
       >
         <FaArrowUp />
       </motion.button>
     </div>
   );
 }
-
-export default About;

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://devsgen-yang-portfolio.netlify.app/sitemap.xml

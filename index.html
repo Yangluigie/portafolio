@@ -1,50 +1,79 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Devs Gen - Professional Web Developer</title>
+
+    <!-- ✅ Anti-flash Dark Mode (antes de que cargue React) -->
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem("theme"); // "dark" | "light"
+          var theme =
+            saved === "dark" || saved === "light"
+              ? saved
+              : window.matchMedia &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches
+              ? "dark"
+              : "light";
+
+          document.documentElement.classList.toggle("dark", theme === "dark");
+          document.documentElement.style.colorScheme = theme;
+        } catch (e) {}
+      })();
+    </script>
+
+    <!-- ✅ Favicon (recomendado: reemplaza vite.svg por tu favicon real) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- ✅ Título y descripción global (fallback) -->
+    <title>Yang Florido | Full Stack Developer (React & Django)</title>
     <meta
       name="description"
-      content="Portafolio de Yang Florido - Devs Gen, experto en desarrollo web con React, Django y más. Soluciones digitales únicas y eficientes."
+      content="Portafolio profesional de Yang Florido, desarrollador Full Stack especializado en React, Django y bases de datos. Proyectos reales y soluciones escalables."
     />
-    <!-- Palabras clave (opcional, menos peso hoy en día) -->
-    <meta
-      name="keywords"
-      content="desarrollador web, React, Django, portafolio, Yang Florido, Devs Gen"
-    />
-    <!-- Open Graph para redes sociales -->
-    <meta
-      property="og:title"
-      content="Yang Florido - Devs Gen - Desarrollador Web Profesional"
-    />
+
+    <!-- ✅ Canonical -->
+    <link rel="canonical" href="https://devsgen-yang-portfolio.netlify.app/" />
+
+    <!-- ✅ Theme color (móvil / barra del navegador) -->
+    <meta name="theme-color" content="#0b1220" />
+
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- ✅ Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Yang Florido Portfolio" />
+    <meta property="og:title" content="Yang Florido | Full Stack Developer" />
     <meta
       property="og:description"
-      content="Conoce mi trabajo en desarrollo web con React y Django. Proyectos innovadores y soluciones digitales."
+      content="Proyectos y experiencia en React, Django y bases de datos. Desarrollo web moderno, escalable y orientado a negocio."
     />
     <meta
       property="og:url"
-      content="https://devsgen-yang-portfolio.netlify.app"
+      content="https://devsgen-yang-portfolio.netlify.app/"
     />
     <meta
       property="og:image"
       content="https://devsgen-yang-portfolio.netlify.app/og-image.jpg"
     />
-    <!-- Twitter Cards -->
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- ✅ Twitter Cards -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta
-      name="twitter:title"
-      content="Yang Florido - Devs Gen - Desarrollador Web Profesional"
-    />
+    <meta name="twitter:title" content="Yang Florido | Full Stack Developer" />
     <meta
       name="twitter:description"
-      content="Portafolio de Yang Florido - Devs Gen, experto en desarrollo web con React y Django."
+      content="Portafolio profesional con proyectos en React, Django y PostgreSQL."
     />
     <meta
       name="twitter:image"
       content="https://devsgen-yang-portfolio.netlify.app/og-image.jpg"
     />
+
+    <meta name="keywords" content="desarrollador web, React, Django, portafolio, Yang Florido, Devs Gen" /> 
+
   </head>
   <body>
     <div id="root"></div>

@@ -1,29 +1,35 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
-function ScrollToTop() {
+export default function ScrollToTop() {
   const { pathname, hash } = useLocation();
 
   useEffect(() => {
     if (hash) {
-      // Si hay un hash (por ejemplo, #projects), desplazar a la sección
-      const element = document.getElementById(hash.replace("#", ""));
-      if (element) {
-        element.scrollIntoView({
-          behavior: "smooth",
-          block: "start",
-        });
-      }
+      const id = hash.replace("#", "");
+
+      // Espera al DOM (importante con lazy/Suspense)
+      const scrollToHash = () => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        } else {
+          // Reintento en el siguiente frame
+          requestAnimationFrame(scrollToHash);
+        }
+      };
+
+      scrollToHash();
     } else {
-      // Si no hay hash, desplazar a la parte superior
       window.scrollTo({
         top: 0,
-        behavior: "instant",
+        behavior: "auto", // estándar y consistente
       });
     }
-  }, [pathname, hash]); // Dependencias: pathname y hash
+  }, [pathname, hash]);
 
   return null;
 }
-
-export default ScrollToTop;
